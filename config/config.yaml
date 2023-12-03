@@ -1,0 +1,6 @@
+# config/config.yaml
+
+env: "local"
+grpc:
+  port: 50001
+  timeout: 10h
