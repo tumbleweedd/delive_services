@@ -26,7 +26,7 @@ func NewApp(
 
 	repo := repository.NewRepository(postgresDB)
 
-	svc := services.NewService(log, repo, repo, tokenTTL)
+	svc := services.NewService(log, tokenTTL, repo, repo)
 
 	grpcApp := grpcapp.NewApp(log, svc, grpcPort)
 

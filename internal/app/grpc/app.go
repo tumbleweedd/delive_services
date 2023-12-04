@@ -3,7 +3,7 @@ package grpc
 import (
 	"fmt"
 	authgrpc "github.com/tumbleweedd/delive_services/sso/internal/grpc"
-	"github.com/tumbleweedd/delive_services/sso/internal/grpc/auth_server"
+	"github.com/tumbleweedd/delive_services/sso/internal/services"
 	"google.golang.org/grpc"
 	"log/slog"
 	"net"
@@ -15,10 +15,10 @@ type App struct {
 	port       int
 }
 
-func NewApp(log *slog.Logger, authService auth_server.AuthService, port int) *App {
+func NewApp(log *slog.Logger, svc *services.Service, port int) *App {
 	gRPCServer := grpc.NewServer()
 
-	authgrpc.Register(gRPCServer, authService)
+	authgrpc.Register(gRPCServer, svc)
 
 	return &App{
 		log:        log,

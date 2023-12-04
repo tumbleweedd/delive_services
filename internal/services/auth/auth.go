@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"github.com/tumbleweedd/delive_services/sso/internal/repository"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/google/uuid"
@@ -9,19 +10,15 @@ import (
 	"time"
 )
 
-type Auth interface {
-	SaveUser(ctx context.Context, name, lastname, email, officeUUID, pwd, pwdConfirm string) (userUUID uuid.UUID, err error)
-}
-
 type AuthService struct {
 	log            *slog.Logger
-	authRepository Auth
+	authRepository repository.Auth
 	tokenTTL       time.Duration
 }
 
 func NewAuthService(
 	log *slog.Logger,
-	authRepository Auth,
+	authRepository repository.Auth,
 	tokenTTL time.Duration,
 
 ) *AuthService {
