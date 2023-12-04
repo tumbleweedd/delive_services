@@ -16,9 +16,10 @@ type App struct {
 func NewApp(
 	log *slog.Logger,
 	grpcPort int,
+	storagePath string,
 	tokenTTL time.Duration,
 ) *App {
-	postgresDB, err := postgres.NewPostgresDB("")
+	postgresDB, err := postgres.NewPostgresDB(storagePath)
 	if err != nil {
 		//return nil
 	}

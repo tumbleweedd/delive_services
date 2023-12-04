@@ -5,7 +5,7 @@ import (
 	"errors"
 	"github.com/go-playground/validator/v10"
 	"github.com/tumbleweedd/delive_protos/gen/go/sso/auth"
-	customErrors "github.com/tumbleweedd/delive_services/sso/internal/lib/errors"
+	custom_errors "github.com/tumbleweedd/delive_services/sso/internal/lib/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -50,7 +50,7 @@ func (authApi *AuthServerAPI) Register(ctx context.Context, request *auth.Regist
 		validRequest.Password, validRequest.PasswordConfirm,
 	)
 	if err != nil {
-		if errors.Is(err, customErrors.ErrUserExists) {
+		if errors.Is(err, custom_errors.ErrUserExists) {
 			return nil, status.Error(codes.AlreadyExists, "user already exists")
 		}
 		return nil, status.Error(codes.Internal, "internal error")

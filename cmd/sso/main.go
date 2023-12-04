@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/tumbleweedd/delive_services/sso/internal/app"
 	"github.com/tumbleweedd/delive_services/sso/internal/config"
 	"log/slog"
@@ -20,7 +21,7 @@ func main() {
 
 	log := setupLogger(cfg.Env)
 
-	application := app.NewApp(log, cfg.GRPC.Port, cfg.TokenTTL)
+	application := app.NewApp(log, cfg.GRPC.Port, getPostgresDSN(&cfg.Postgres), cfg.TokenTTL)
 
 	go application.GRPCServer.RunWithPanic()
 
@@ -57,4 +58,9 @@ func setupLogger(env string) *slog.Logger {
 	}
 
 	return log
+}
+
+func getPostgresDSN(psqlCfg *config.PostgresConfig) string {
+	return fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+		psqlCfg.Host, psqlCfg.Port, psqlCfg.User, psqlCfg.DbName, psqlCfg.Pwd, psqlCfg.SslMode)
 }

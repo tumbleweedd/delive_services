@@ -21,6 +21,12 @@ type GRPCConfig struct {
 }
 
 type PostgresConfig struct {
+	Port    string `yaml:"port"`
+	Host    string `yaml:"host"`
+	DbName  string `yaml:"db_name"`
+	User    string `yaml:"user"`
+	Pwd     string `yaml:"password"`
+	SslMode string `yaml:"sslomode"`
 }
 
 func InitConfiguration() *Config {
