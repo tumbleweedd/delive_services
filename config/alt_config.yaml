@@ -1,0 +1,13 @@
+# config/alt_config.yaml
+
+env: "local"
+grpc:
+  port: 50001
+  timeout: 10h
+postgres:
+  port: 5432
+  host: "localhost"
+  db_name: "customers"
+  user: "altcraft"
+  password: "xn3Q78RRh4GRqG"
+  sslmode: "false"
