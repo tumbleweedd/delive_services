@@ -4,8 +4,6 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/tumbleweedd/delive_services/sso/internal/repository"
-	auth_service "github.com/tumbleweedd/delive_services/sso/internal/services/auth"
-	customer_service "github.com/tumbleweedd/delive_services/sso/internal/services/customer"
 	"log/slog"
 	"time"
 )
@@ -32,14 +30,13 @@ type Service struct {
 func NewService(
 	log *slog.Logger,
 	tokenTTL time.Duration,
-	authRepo repository.Auth,
 	customerRepo repository.Customer,
 ) *Service {
 	return &Service{
 		log:      log,
 		tokenTTL: tokenTTL,
 
-		Auth:     auth_service.NewAuthService(log, authRepo, tokenTTL),
-		Customer: customer_service.NewCustomerService(log, customerRepo),
+		Auth:     NewAuthService(log, customerRepo, tokenTTL),
+		Customer: NewCustomerService(log, customerRepo),
 	}
 }

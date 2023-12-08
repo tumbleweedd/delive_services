@@ -6,14 +6,14 @@ import (
 )
 
 type UserStruct struct {
-	UUID         uuid.UUID
-	Email        string
-	Name         string
-	LastName     string
-	OfficeUUID   string
-	HashPassword []byte
-	LastLoginAt  time.Time
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
-	RefreshToken string
+	UUID         uuid.UUID `db:"uuid"`
+	Email        string    `db:"email"`
+	Name         string    `db:"name"`
+	LastName     string    `db:"lastname"`
+	OfficeUUID   string    `db:"office_uuid"`
+	HashPassword string    `db:"password"`
+	LastLoginAt  time.Time `db:"last_login_at"`
+	CreatedAt    time.Time `db:"created_at"`
+	UpdatedAt    time.Time `db:"updated_at"`
+	RefreshToken string    `db:"refresh_token"`
 }

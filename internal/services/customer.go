@@ -1,4 +1,4 @@
-package customer
+package services
 
 import "log/slog"
 
