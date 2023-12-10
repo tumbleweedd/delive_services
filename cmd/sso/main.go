@@ -21,7 +21,11 @@ func main() {
 
 	log := setupLogger(cfg.Env)
 
-	application := app.NewApp(log, cfg.GRPC.Port, getPostgresDSN(&cfg.Postgres), cfg.TokenTTL)
+	application, err := app.NewApp(log, cfg.GRPC.Port, getPostgresDSN(&cfg.Postgres), cfg.TokenTTL)
+	if err != nil {
+		log.Error(fmt.Sprintf("failed to create application: %v", err))
+		os.Exit(1)
+	}
 
 	go application.GRPCServer.RunWithPanic()
 

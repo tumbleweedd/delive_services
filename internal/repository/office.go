@@ -6,6 +6,14 @@ import (
 	"github.com/tumbleweedd/delive_services/sso/internal/domain/models"
 )
 
+type Office interface {
+	GetOffice(officeUUID uuid.UUID) (*models.Office, error)
+	CreateOffice(uuid uuid.UUID, office *models.Office) error
+	GetOfficeList() ([]*models.Office, error)
+	UpdateOffice(office *models.Office) error
+	DeleteOffice(officeUUID uuid.UUID) error
+}
+
 type OfficeRepository struct {
 	db *sqlx.DB
 }

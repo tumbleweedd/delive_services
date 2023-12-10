@@ -6,6 +6,13 @@ import (
 	"github.com/tumbleweedd/delive_services/sso/internal/domain/models"
 )
 
+type Order interface {
+	CreateOrder(order *models.Order, positions ...[]*models.OrderItem) error
+	GetOrder(orderUUID uuid.UUID) (*models.Order, error)
+	UpdateOrder(order *models.Order) error
+	DeleteOrder(orderUUID uuid.UUID) error
+}
+
 type OrderRepository struct {
 	db *sqlx.DB
 }

@@ -26,7 +26,7 @@ type PostgresConfig struct {
 	DbName  string `yaml:"db_name"`
 	User    string `yaml:"user"`
 	Pwd     string `yaml:"password"`
-	SslMode string `yaml:"sslomode"`
+	SslMode string `yaml:"sslmode"`
 }
 
 func InitConfiguration() *Config {

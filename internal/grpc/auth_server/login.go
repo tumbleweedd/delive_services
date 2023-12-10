@@ -33,12 +33,13 @@ func (authApi *AuthServerAPI) Login(ctx context.Context, request *auth.LoginRequ
 		return nil, status.Errorf(codes.InvalidArgument, "invalid request data: %v", err)
 	}
 
-	token, err := authApi.authService.Login(ctx, validationRequest.Email, validationRequest.Password, validationRequest.AppID)
+	accessToken, _, err := authApi.authService.Login(ctx, validationRequest.Email, validationRequest.Password, int(validationRequest.AppID))
 	if err != nil {
 		return nil, status.Error(codes.Internal, "internal error")
 	}
 
 	return &auth.LoginResponse{
-		Token: token,
+		Token: accessToken,
+		//RefreshToken: refreshToken,
 	}, nil
 }

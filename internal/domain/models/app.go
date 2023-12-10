@@ -1,7 +1,10 @@
 package models
 
+import "github.com/google/uuid"
+
 type App struct {
-	ID     int
-	Name   string
+	ID   uuid.UUID
+	Name string
+	// чтобы подписывать токины и на стороне клиентсокого приложения валидировать их
 	Secret string
 }
