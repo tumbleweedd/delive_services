@@ -13,11 +13,6 @@ import (
 // - user: A pointer to a UserStruct representing the user.
 // - app: A pointer to an App representing the app.
 // - tokenTTL: A time.Duration representing the token's time to live.
-//
-// Returns:
-// - accessTokenStr: A string representing the access token.
-// - refreshTokenStr: A string representing the refresh token.
-// - error: An error if any occurred during token generation.
 // TODO: покрыть тестами данную функцию
 func NewToken(user *models.UserStruct, app *models.App, tokenTTL time.Duration) (string, string, error) {
 	// Create new access and refresh tokens

@@ -1,4 +1,4 @@
-package auth_server
+package auth_server_grpc
 
 import (
 	"context"

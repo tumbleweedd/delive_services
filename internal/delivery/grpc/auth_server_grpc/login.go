@@ -1,4 +1,4 @@
-package auth_server
+package auth_server_grpc
 
 import (
 	"context"
@@ -33,13 +33,14 @@ func (authApi *AuthServerAPI) Login(ctx context.Context, request *auth.LoginRequ
 		return nil, status.Errorf(codes.InvalidArgument, "invalid request data: %v", err)
 	}
 
-	accessToken, _, err := authApi.authService.Login(ctx, validationRequest.Email, validationRequest.Password, int(validationRequest.AppID))
+	accessToken, refreshToken, err := authApi.authService.Login(ctx, validationRequest.Email, validationRequest.Password, int(validationRequest.AppID))
 	if err != nil {
 		return nil, status.Error(codes.Internal, "internal error")
 	}
 
 	return &auth.LoginResponse{
-		Token: accessToken,
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
 		//RefreshToken: refreshToken,
 	}, nil
 }

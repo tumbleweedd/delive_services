@@ -12,7 +12,7 @@ type Repository struct {
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Customer: NewCustomerRepository(db),
+		Customer: NewUserRepository(db),
 		Office:   NewOfficeRepository(db),
 		Order:    NewOrderRepository(db),
 	}

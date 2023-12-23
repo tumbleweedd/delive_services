@@ -1,4 +1,4 @@
-package auth_server
+package auth_server_grpc
 
 import (
 	"context"
@@ -18,7 +18,7 @@ func (isAdminReqValidation *IsAdminRequestValidation) Validate() error {
 
 func isAdminRequestValidationFromGRPSRequest(grpcRequest *auth.IsAdminRequest) *IsAdminRequestValidation {
 	return &IsAdminRequestValidation{
-		UserUUID: grpcRequest.UserUuid,
+		//UserUUID: grpcRequest.UserUuid,
 	}
 }
 

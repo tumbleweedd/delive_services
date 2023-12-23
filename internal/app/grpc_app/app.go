@@ -1,8 +1,8 @@
-package grpc
+package grpc_app
 
 import (
 	"fmt"
-	authgrpc "github.com/tumbleweedd/delive_services/sso/internal/grpc"
+	authgrpc "github.com/tumbleweedd/delive_services/sso/internal/delivery/grpc"
 	"github.com/tumbleweedd/delive_services/sso/internal/services"
 	"google.golang.org/grpc"
 	"log/slog"
@@ -15,7 +15,7 @@ type App struct {
 	port       int
 }
 
-func NewApp(log *slog.Logger, svc *services.Service, port int) *App {
+func NewApp(log *slog.Logger, svc *services.Services, port int) *App {
 	gRPCServer := grpc.NewServer()
 
 	authgrpc.Register(gRPCServer, svc)
@@ -60,5 +60,4 @@ func (a *App) Stop() {
 	a.log.With(slog.String("grpcAppStopInfo", grpcAppStopInfo)).Info("stopping grpc server")
 
 	a.gRPCServer.GracefulStop()
-
 }

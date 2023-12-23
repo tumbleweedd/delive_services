@@ -2,28 +2,32 @@ package services
 
 import (
 	"github.com/tumbleweedd/delive_services/sso/internal/repository"
+	"github.com/tumbleweedd/delive_services/sso/internal/services/auth_service"
+	"github.com/tumbleweedd/delive_services/sso/internal/services/customer_service"
 	"log/slog"
 	"time"
 )
 
-type Service struct {
+type Services struct {
 	log      *slog.Logger
 	tokenTTL time.Duration
 
-	Auth
-	Customer
+	auth_service.Auth
+
+	customer_service.User
+	customer_service.Order
 }
 
-func NewService(
+func NewServices(
 	log *slog.Logger,
 	tokenTTL time.Duration,
 	customerRepo repository.Customer,
-) *Service {
-	return &Service{
+) *Services {
+	return &Services{
 		log:      log,
 		tokenTTL: tokenTTL,
 
-		Auth:     NewAuthService(log, customerRepo, tokenTTL),
-		Customer: NewCustomerService(log, customerRepo),
+		Auth: auth_service.NewAuthService(log, customerRepo, tokenTTL),
+		User: customer_service.NewUserService(log, customerRepo),
 	}
 }

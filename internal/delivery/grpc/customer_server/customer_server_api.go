@@ -2,7 +2,7 @@ package customer_server
 
 import (
 	"github.com/tumbleweedd/delive_protos/gen/go/sso/customer"
-	"github.com/tumbleweedd/delive_services/sso/internal/services"
+	"github.com/tumbleweedd/delive_services/sso/internal/services/customer_service"
 )
 
 type CustomerServerAPI struct {
@@ -10,10 +10,10 @@ type CustomerServerAPI struct {
 	customer.UnimplementedOfficeServiceServer
 	customer.UnimplementedOrderServiceServer
 
-	customerService services.Customer
+	customerService customer_service.User
 }
 
-func NewCustomerServerAPI(customerService services.Customer) *CustomerServerAPI {
+func NewCustomerServerAPI(customerService customer_service.User) *CustomerServerAPI {
 	return &CustomerServerAPI{
 		customerService: customerService,
 	}

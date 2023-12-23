@@ -39,9 +39,9 @@ func (customerApi *CustomerServerAPI) GetUserList(ctx context.Context, request *
 	for _, user := range users {
 		result = append(result, &customer.User{
 			// TODO: change id to uuid
-			Id:   user.UUID.String(),
-			Name: user.Name,
-			//Lastname: user.LastName,
+			Id:         user.UUID.String(),
+			Name:       user.Name,
+			Lastname:   user.LastName,
 			Email:      user.Email,
 			OfficeName: user.OfficeName,
 			OfficeUuid: user.OfficeUUID,

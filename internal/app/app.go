@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	grpcapp "github.com/tumbleweedd/delive_services/sso/internal/app/grpc"
+	httpapp "github.com/tumbleweedd/delive_services/sso/internal/app/http"
 	"github.com/tumbleweedd/delive_services/sso/internal/repository"
 	"github.com/tumbleweedd/delive_services/sso/internal/services"
 	"github.com/tumbleweedd/delive_services/sso/pkg/databases/postgres"
@@ -11,12 +11,12 @@ import (
 )
 
 type App struct {
-	GRPCServer *grpcapp.App
+	HTTPServer *httpapp.App
 }
 
 func NewApp(
 	log *slog.Logger,
-	grpcPort int,
+	httpPort int,
 	storagePath string,
 	tokenTTL time.Duration,
 ) (*App, error) {
@@ -28,11 +28,11 @@ func NewApp(
 
 	repo := repository.NewRepository(postgresDB)
 
-	svc := services.NewService(log, tokenTTL, repo)
+	svc := services.NewServices(log, tokenTTL, repo)
 
-	grpcApp := grpcapp.NewApp(log, svc, grpcPort)
+	httpApp := httpapp.NewApp(log, httpPort, svc)
 
 	return &App{
-		GRPCServer: grpcApp,
+		HTTPServer: httpApp,
 	}, nil
 }

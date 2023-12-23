@@ -11,11 +11,11 @@ import (
 	custom_errors "github.com/tumbleweedd/delive_services/sso/internal/lib/errors"
 )
 
-type CustomerSaver interface {
+type UserSaver interface {
 	SaveUser(ctx context.Context, officeUUID uuid.UUID, name, lastname, email, pwd string) (userUUID uuid.UUID, err error)
 }
 
-type CustomerGetter interface {
+type UserGetter interface {
 	GetUser(ctx context.Context, email string) (*models.UserStruct, error)
 	GetUserList(ctx context.Context, officeUUID uuid.UUID) ([]*models.UserStruct, error)
 	IsAdmin(ctx context.Context, userUUID uuid.UUID) (bool, error)
@@ -26,20 +26,20 @@ type AppInfoGetter interface {
 }
 
 type Customer interface {
-	CustomerGetter
+	UserGetter
 	AppInfoGetter
-	CustomerSaver
+	UserSaver
 }
 
-type CustomerRepository struct {
+type UserRepository struct {
 	db *sqlx.DB
 }
 
-func (customerRepo *CustomerRepository) AppInfo(ctx context.Context, appID int) (*models.App, error) {
+func (userRepo *UserRepository) AppInfo(ctx context.Context, appID int) (*models.App, error) {
 	const op = "repository.customer.AppInfo"
 	const query = "SELECT id, name secret FROM apps WHERE id = $1"
 
-	stmt, err := customerRepo.db.Prepare(query)
+	stmt, err := userRepo.db.Prepare(query)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -56,17 +56,17 @@ func (customerRepo *CustomerRepository) AppInfo(ctx context.Context, appID int) 
 	return &appInfo, nil
 }
 
-func NewCustomerRepository(db *sqlx.DB) *CustomerRepository {
-	return &CustomerRepository{
+func NewUserRepository(db *sqlx.DB) *UserRepository {
+	return &UserRepository{
 		db: db,
 	}
 }
 
-func (customerRepo *CustomerRepository) SaveUser(ctx context.Context, officeUUID uuid.UUID, name, lastname, email, pwd string) (uuid.UUID, error) {
+func (userRepo *UserRepository) SaveUser(ctx context.Context, officeUUID uuid.UUID, name, lastname, email, pwd string) (uuid.UUID, error) {
 	const op = "repository.customer.SaveUser"
 	const query = "INSERT INTO users (name, lastname, email, office_uuid, password, password_confirm) VALUES ($1, $2, $3, $4, $5, $6) RETURNING uuid"
 
-	stmt, err := customerRepo.db.Prepare(query)
+	stmt, err := userRepo.db.Prepare(query)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -81,11 +81,11 @@ func (customerRepo *CustomerRepository) SaveUser(ctx context.Context, officeUUID
 	return userUUID, nil
 }
 
-func (customerRepo *CustomerRepository) GetUser(ctx context.Context, email string) (*models.UserStruct, error) {
+func (userRepo *UserRepository) GetUser(ctx context.Context, email string) (*models.UserStruct, error) {
 	const op = "repository.customer.GetUser"
 	const query = "SELECT * FROM users WHERE email = $1"
 
-	stmt, err := customerRepo.db.Prepare(query)
+	stmt, err := userRepo.db.Prepare(query)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -102,12 +102,12 @@ func (customerRepo *CustomerRepository) GetUser(ctx context.Context, email strin
 	return user, nil
 }
 
-func (customerRepo *CustomerRepository) GetUserList(ctx context.Context, officeUUID uuid.UUID) ([]*models.UserStruct, error) {
+func (userRepo *UserRepository) GetUserList(ctx context.Context, officeUUID uuid.UUID) ([]*models.UserStruct, error) {
 	const op = "repository.customer.GetUserList"
 
 	const query = "SELECT uuid, name, lastname, email, office_uuid, office_name, created_at FROM users WHERE office_uuid = $1"
 
-	stmt, err := customerRepo.db.PrepareContext(ctx, query)
+	stmt, err := userRepo.db.PrepareContext(ctx, query)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -122,11 +122,11 @@ func (customerRepo *CustomerRepository) GetUserList(ctx context.Context, officeU
 	panic("unimplemented")
 }
 
-func (customerRepo *CustomerRepository) IsAdmin(ctx context.Context, userUUID uuid.UUID) (bool, error) {
+func (userRepo *UserRepository) IsAdmin(ctx context.Context, userUUID uuid.UUID) (bool, error) {
 	const op = "repository.customer.IsAdmin"
 	const query = "SELECT is_admin FROM users WHERE uuid = $1"
 
-	stmt, err := customerRepo.db.Prepare(query)
+	stmt, err := userRepo.db.Prepare(query)
 	if err != nil {
 		return false, fmt.Errorf("%s: %w", op, err)
 	}

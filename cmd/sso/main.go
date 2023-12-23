@@ -21,13 +21,13 @@ func main() {
 
 	log := setupLogger(cfg.Env)
 
-	application, err := app.NewApp(log, cfg.GRPC.Port, getPostgresDSN(&cfg.Postgres), cfg.TokenTTL)
+	application, err := app.NewApp(log, cfg.HTTP.Port, getPostgresDSN(&cfg.Postgres), cfg.TokenTTL)
 	if err != nil {
 		log.Error(fmt.Sprintf("failed to create application: %v", err))
 		os.Exit(1)
 	}
 
-	go application.GRPCServer.RunWithPanic()
+	go application.HTTPServer.RunWithPanic()
 
 	// TODO: инициализировать приложение (app)
 
@@ -35,10 +35,9 @@ func main() {
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
-
 	<-stop
 
-	application.GRPCServer.Stop()
+	application.HTTPServer.Stop()
 
 	log.Info("application stopped")
 }
